@@ -1,14 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Victim : MonoBehaviour {
+public class Victim : PickUp {
 
-    public float objectSpeed;
-    private Rigidbody2D rb;
+	private Rigidbody2D _rb;
+
+	public float objectSpeed;
     private float xActive, yActive;
+
+	void Awake(){
+		_rb = GetComponent<Rigidbody2D>();
+		Type = PickUpType.Victim;
+	}
+
     // Use this for initialization
     void Start () {
-        rb = GetComponent<Rigidbody2D>();
         xActive = 1.0f;
         yActive = -1.0f;
         InvokeRepeating("SwitchDirections", 0.5f, 1.0f);
@@ -26,10 +32,10 @@ public class Victim : MonoBehaviour {
 
     void MoveAround()
     {
-		rb.velocity = new Vector3(xActive, yActive, 0.0f) * objectSpeed;
-		rb.position = new Vector3(
-			Mathf.Clamp(rb.position.x, -3.5f, 3.5f),
-			Mathf.Clamp(rb.position.y, -3.0f, 4.0f),
+		_rb.velocity = new Vector3(xActive, yActive, 0.0f) * objectSpeed;
+		_rb.position = new Vector3(
+			Mathf.Clamp(_rb.position.x, -3.5f, 3.5f),
+			Mathf.Clamp(_rb.position.y, -3.0f, 4.0f),
 			0
 		);
     }
