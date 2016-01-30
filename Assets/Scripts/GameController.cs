@@ -7,10 +7,12 @@ public class GameController : MonoBehaviour {
     private List<PickUp> PickUps;
     public Vector2 SpawnValues;
     public GameObject Item;
+    public GameObject Civil;
     // Use this for initialization
     void Start()
     {
-        SpawnObjects();
+        //SpawnObjects();
+        SpawnCivils();
     }
 
         // Update is called once per frame
@@ -22,13 +24,22 @@ public class GameController : MonoBehaviour {
     {
 
     }
-    void SpawnObjects()
+    /*void SpawnObjects()
     {
         for (int i = 0; i < 6; i++)
         {
-            Vector3 spawnPosition = new Vector3(Random.Range(-SpawnValues.x, SpawnValues.x), SpawnValues.y,0);
+            Vector3 spawnPosition = new Vector3(Random.Range(-SpawnValues.x, SpawnValues.x), Random.Range(-SpawnValues.y, SpawnValues.y), 0);
             Quaternion spawnRotation = Quaternion.identity;
             Instantiate(Item, spawnPosition, spawnRotation);
+        }
+    }*/
+    void SpawnCivils()
+    {
+        for (int i = 0; i <10; i++)
+        {
+            Vector3 spawnPosition = new Vector3(Random.Range(-SpawnValues.x, SpawnValues.x), Random.Range(-SpawnValues.y, SpawnValues.y), 0);
+            Quaternion spawnRotation = Quaternion.identity;
+            Instantiate(Civil, spawnPosition, spawnRotation);
         }
     }
 }

@@ -11,16 +11,22 @@ public class PickUp : MonoBehaviour
     };
     private PickUpType Type;
     private string Name;
+    public float horizontalSpeed;
+    public float verticalSpeed;
+    public float amplitude;
+    private Vector3 tempPosition;
     // Use this for initialization
     void Start()
     {
-
+        tempPosition = transform.position;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-
+        tempPosition.x += horizontalSpeed;
+        tempPosition.y = Mathf.Sin(Time.realtimeSinceStartup * verticalSpeed) * amplitude;
+        transform.position = tempPosition;
     }
 
     void OnMouseDown()
