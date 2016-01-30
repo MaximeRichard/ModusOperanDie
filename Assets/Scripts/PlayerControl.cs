@@ -30,8 +30,16 @@ public class PlayerControl : MonoBehaviour {
 			Move = (v * Vector2.up + h * Vector2.right).normalized;
 		}
 	}
-
+		
 	void FixedUpdate (){
+		ClampPosition ();
 		_killer.Move (Move);
+	}
+
+	void ClampPosition (){
+		Vector2 pos = transform.position;
+		pos.x = Mathf.Clamp (transform.position.x, -8.42f, 8.55f);
+		pos.y = Mathf.Clamp (transform.position.y, -4.39f, 4.51f);
+		transform.position = pos;
 	}
 }
