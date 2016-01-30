@@ -10,7 +10,6 @@ public class Victim : PickUp {
 
 	void Awake(){
 		_rb = GetComponent<Rigidbody2D>();
-		Type = PickUpType.Victim;
 	}
 
     // Use this for initialization

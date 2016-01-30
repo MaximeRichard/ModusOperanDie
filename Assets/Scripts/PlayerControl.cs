@@ -4,6 +4,11 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerControl : MonoBehaviour {
 
+	public enum DropDirection{
+		Left=1,
+		Right
+	}
+		
 	private Killer _killer;
 
 	private bool GamepadAvailable;
@@ -31,7 +36,20 @@ public class PlayerControl : MonoBehaviour {
 
 			_killer.Grabbing = GamepadInput.Instance.gamepads [PlayerNumber - 1].GetButtonDown (GamepadButton.Action3);
 			_killer.Killing = GamepadInput.Instance.gamepads [PlayerNumber - 1].GetButtonDown (GamepadButton.Action1);
-			print (_killer.Killing);
+
+			DropDirection dropDirection = (DropDirection) 0;
+
+			if(GamepadInput.Instance.gamepads [PlayerNumber - 1].GetButtonDown (GamepadButton.Action4))
+				print(_killer.CanKill ());
+
+			if ((GamepadInput.Instance.gamepads [PlayerNumber - 1].GetAxis (GamepadAxis.LeftTrigger) > 0.5) == true) {
+				dropDirection = DropDirection.Left;
+				_killer.Drop (dropDirection);
+			}
+			else if((GamepadInput.Instance.gamepads[PlayerNumber - 1].GetAxis(GamepadAxis.RightTrigger) > 0.5) == true)
+				dropDirection = DropDirection.Right;
+				_killer.Drop (dropDirection);
+			
 		}
 	}
 		

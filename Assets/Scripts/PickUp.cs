@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PickUp : MonoBehaviour {
 
-	protected enum PickUpType
+	public enum PickUpType
 	{
 		Weapon,
 		Signature,
@@ -11,7 +11,7 @@ public class PickUp : MonoBehaviour {
 	};
 
 	public PickUpType Type;
-	private string Name;
+	public string Name;
 
 	// Use this for initialization
 	void Start () {
