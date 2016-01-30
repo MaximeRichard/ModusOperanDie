@@ -9,13 +9,14 @@ public class Killer : MonoBehaviour {
     private string TargetWeapon;
     private string TargetSignature;
     private string TargetVictim;
-    private List<PickUp> PickUps;
+	private List<PickUp> PickUps = new List<PickUp>();
 
 	public float MoveSpeed;
 	public int OldDirection = 1;
 	public Vector2 CurrentDirection;
 	public bool FacingRight = true;
 	public bool Grabbing = false;
+	public bool Killing = false;
 	public bool Stunned = false;
 
 	void Awake(){
@@ -31,8 +32,6 @@ public class Killer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Animate ();
-		print ("Moving : "+ (_rb.velocity != Vector2.zero ? true : false));
-		print ("direction : " + (CurrentDirection.x >= 0 ? 1 : 0));
 	}
 
 	public void Attack()
@@ -84,10 +83,16 @@ public class Killer : MonoBehaviour {
 		transform.localScale = theScale;
 	}
 
-	void OnTriggerEnter2D(Collider2D other){
+	void OnTriggerStay2D(Collider2D other){
 		if (other.tag == "PickUp") {
 			if (Grabbing) {
-				//Grab((PickUp) other)
+				Destroy (other.gameObject);
+			} 
+		}
+
+		if (other.tag == "Civil") {
+			if (Killing) {
+				Destroy (other.transform.parent.gameObject);
 			}
 		}
 	}
