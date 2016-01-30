@@ -14,7 +14,7 @@ public class Killer : MonoBehaviour {
 
     public string TargetWeapon;
     public string TargetSignature;
-    private string TargetVictim;
+    public string TargetVictim;
 
 	public PickUpData InventorySlot1;
 	public PickUpData InventorySlot2;
@@ -61,14 +61,9 @@ public class Killer : MonoBehaviour {
 
 	public void Grab(GameObject go)
     {
+		PickUpData pu = CopyPickUpData(go.GetComponent<PickUp>());
+
 		if (InventorySlot1.Name == null || InventorySlot2.Name == null) {
-			PickUpData pu = CopyPickUpData(go.GetComponent<PickUp>());
-			print ("Type : "+pu.Type);
-			if (pu.Type == PickUp.PickUpType.Victim && pu.Name == TargetVictim && CanKill ()) {
-				//TODO : à remplacer par GameController.OnWin()
-				HasWon = true;
-				Destroy (go);
-			}
 
 			if (InventorySlot1.Name != pu.Name && InventorySlot2.Name != pu.Name) {	
 				if (!(pu.Type == PickUp.PickUpType.Victim) && InventorySlot1.Name == null) {
@@ -79,6 +74,12 @@ public class Killer : MonoBehaviour {
 					Destroy (go);
 				}
 			}
+		}
+
+		if (pu.Type == PickUp.PickUpType.Victim && pu.Name == TargetVictim && CanKill ()) {
+			//TODO : à remplacer par GameController.OnWin()
+			HasWon = true;
+			Destroy (go);
 		}
     }
 
@@ -157,6 +158,7 @@ public class Killer : MonoBehaviour {
 			} 
 		}
 		if (other.tag == "Civil") {
+
 			if (Killing) {
 				Grab (other.transform.parent.gameObject);
 			}
