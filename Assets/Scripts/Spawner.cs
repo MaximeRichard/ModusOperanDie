@@ -61,11 +61,14 @@ public class Spawner : MonoBehaviour {
     }
     void SpawnKillers()
     {
+        int i = 1;
         foreach (Vector3 killer in KillersPosition)
         {
             Vector3 spawnPosition = killer;
             Quaternion spawnRotation = Quaternion.identity;
-            Instantiate(Killer, spawnPosition, spawnRotation);
+            GameObject k = (GameObject) Instantiate(Killer, spawnPosition, spawnRotation);
+            k.GetComponent<PlayerControl>().PlayerNumber = i;
+            i++;
         }
     }
 }
