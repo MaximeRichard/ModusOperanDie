@@ -40,7 +40,7 @@ public class GameController : MonoBehaviour {
 
         //chargement de menu
         //Application.LoadLevel("Menu");
-        LaunchGame();
+        Application.LoadLevel("arena");
     }
 
     // fonction a appeller qui retourne le script gameManager

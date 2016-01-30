@@ -29,18 +29,21 @@ public class PlayerControl : MonoBehaviour {
 	void Update () {
 		GamepadAvailable = GamepadInput.Instance.gamepads.Count >= PlayerNumber ? true : false;
 
-		if(GamepadAvailable){
+		if(GamepadAvailable && !_killer.Stunned){
 			float h = GamepadInput.Instance.gamepads [PlayerNumber - 1].GetAxis (GamepadAxis.LeftStickX);
 			float v = GamepadInput.Instance.gamepads [PlayerNumber - 1].GetAxis (GamepadAxis.LeftStickY);
 			Move = (v * Vector2.up + h * Vector2.right).normalized;
 
-			_killer.Grabbing = GamepadInput.Instance.gamepads [PlayerNumber - 1].GetButtonDown (GamepadButton.Action3);
-			_killer.Killing = GamepadInput.Instance.gamepads [PlayerNumber - 1].GetButtonDown (GamepadButton.Action1);
+			_killer.Grabbing = GamepadInput.Instance.gamepads [PlayerNumber - 1].GetButtonDown (GamepadButton.Action1);
+			_killer.Killing = GamepadInput.Instance.gamepads [PlayerNumber - 1].GetButtonDown (GamepadButton.Action3);
 
 			DropDirection dropDirection = (DropDirection) 0;
 
-			if(GamepadInput.Instance.gamepads [PlayerNumber - 1].GetButtonDown (GamepadButton.Action4))
-				print(_killer.CanKill ());
+
+			if (GamepadInput.Instance.gamepads [PlayerNumber - 1].GetButtonDown (GamepadButton.Action3)) {
+				print ("Attack");
+				StartCoroutine (_killer.Attack ());
+			}
 
 			if ((GamepadInput.Instance.gamepads [PlayerNumber - 1].GetAxis (GamepadAxis.LeftTrigger) > 0.5) == true) {
 				dropDirection = DropDirection.Left;

@@ -26,8 +26,11 @@ public class Killer : MonoBehaviour {
 	public bool FacingRight = true;
 	public bool Grabbing = false;
 	public bool Killing = false;
-	public bool Stunned = false;
 	public bool HasWon = false;
+
+	public bool Stunned = false;
+	public float StunTime;
+	private float CurrentStunTime = 0;
 
 	public GameObject PickUpPrefab;
 
@@ -46,11 +49,22 @@ public class Killer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Animate ();
+
+		if (Stunned && StunTime > CurrentStunTime)
+			CurrentStunTime += Time.deltaTime;
+		else if (Stunned && StunTime <= CurrentStunTime) {
+			CurrentStunTime = 0;
+			Stunned = false;
+			_animator.SetBool ("stun", false);
+		}
 	}
 
-	public void Attack()
+	public IEnumerator Attack()
     {
-
+		_animator.SetBool ("attacking", true);
+		print ("Attack");
+		yield return new WaitForSeconds (0.5f);
+		_animator.SetBool ("attacking", false);
     }
 
 	public void Move(Vector2 MoveDirection)
@@ -157,10 +171,21 @@ public class Killer : MonoBehaviour {
 				Grab (other.gameObject);
 			} 
 		}
+
 		if (other.tag == "Civil") {
 
 			if (Killing) {
+				Attack ();
 				Grab (other.transform.parent.gameObject);
+			}
+		}
+
+		if (other.tag == "Player") {
+			Killer k = other.transform.parent.gameObject.GetComponent<Killer> ();
+			if (k.Killing) {
+				Stunned = true;
+				_animator.SetBool ("stun", true);
+				Attack ();
 			}
 		}
 	}
