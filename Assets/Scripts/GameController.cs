@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour {
     private List<Killer> Killers;
     private List<PickUp> PickUps;
     public Vector2 SpawnValues;
+
     GameState gameState;
 
     //variable static  qui ne peut exister qu'une fois dans le programme
