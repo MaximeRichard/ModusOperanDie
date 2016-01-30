@@ -8,11 +8,13 @@ public class GameController : MonoBehaviour {
     public Vector2 SpawnValues;
     public GameObject Item;
     public GameObject Civil;
+    public GameObject Cop;
     // Use this for initialization
     void Start()
     {
         //SpawnObjects();
-        SpawnCivils();
+        //SpawnCivils();
+        SpawnCops();
     }
 
         // Update is called once per frame
@@ -33,7 +35,7 @@ public class GameController : MonoBehaviour {
             Instantiate(Item, spawnPosition, spawnRotation);
         }
     }*/
-    void SpawnCivils()
+    /*void SpawnCivils()
     {
         for (int i = 0; i <10; i++)
         {
@@ -41,5 +43,11 @@ public class GameController : MonoBehaviour {
             Quaternion spawnRotation = Quaternion.identity;
             Instantiate(Civil, spawnPosition, spawnRotation);
         }
+    }*/
+    void SpawnCops()
+    {
+            Vector3 spawnPosition = new Vector3(-6, -3, 0);
+            Quaternion spawnRotation = Quaternion.identity;
+            Instantiate(Cop, spawnPosition, spawnRotation);
     }
 }
