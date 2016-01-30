@@ -7,6 +7,8 @@ public class PlayerControl : MonoBehaviour {
 	private Killer _killer;
 
 	private bool GamepadAvailable;
+	public int PlayerNumber;
+
 	private Vector2 Move = new Vector2(0, 0);
 
 	void Awake(){
@@ -20,16 +22,13 @@ public class PlayerControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKey (KeyCode.Z))
-			Move = new Vector2 (0, 1);
-		else if (Input.GetKey (KeyCode.Q))
-			Move = new Vector2 (-1, 0);
-		else if (Input.GetKey (KeyCode.S))
-			Move = new Vector2 (0, -1);
-		else if(Input.GetKey (KeyCode.D))
-			Move = new Vector2 (1, 0);
-		else
-			Move = new Vector2 (0, 0);
+		GamepadAvailable = GamepadInput.Instance.gamepads.Count >= PlayerNumber ? true : false;
+
+		if(GamepadAvailable){
+			float h = GamepadInput.Instance.gamepads [PlayerNumber - 1].GetAxis (GamepadAxis.LeftStickX);
+			float v = GamepadInput.Instance.gamepads [PlayerNumber - 1].GetAxis (GamepadAxis.LeftStickY);
+			Move = (v * Vector2.up + h * Vector2.right).normalized;
+		}
 	}
 
 	void FixedUpdate (){
