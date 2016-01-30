@@ -1,53 +1,78 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
+
+    //Basic GameStates for the menu, In Game and game Ending
+    public enum GameState
+    {
+        Start,
+        InGame,
+        End
+    }
 
     private List<Killer> Killers;
     private List<PickUp> PickUps;
     public Vector2 SpawnValues;
-    public GameObject Item;
-    public GameObject Civil;
-    public GameObject Cop;
-    // Use this for initialization
-    void Start()
+    GameState gameState;
+
+    //variable static  qui ne peut exister qu'une fois dans le programme
+    private static GameController gameController = null;
+
+
+        // Use this for initialization
+        void Start()
     {
-        //SpawnObjects();
-        //SpawnCivils();
-        SpawnCops();
+        //SAFE CODE : Check si il existe un autre gamemanager si c'est le cas, je m'autodetruit
+        if (gameController != null && gameController != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        // pour qu'on puisse y accéder dans les methodes statiques
+        gameController = this;
+
+        // L'objet n'est pas détruit quand on change de scène
+        DontDestroyOnLoad(this.gameObject);
+
+        //chargement de menu
+        //Application.LoadLevel("Menu");
+        LaunchGame();
     }
 
-        // Update is called once per frame
-        void Update () {
+    // fonction a appeller qui retourne le script gameManager
+    public static GameController getInstance()
+    {
+        return gameController;
+    }
+
+    //Accesseurs de GameState
+    public static GameState GetGameState()
+    {
+        return gameController.gameState;
+    }
+    public static void SetGameState(GameState state)
+    {
+        gameController.gameState = state;
+    }
+
+    // Update is called once per frame
+    void Update () {
 	
 	}
 
-    void CheckForWin()
+    //OnWin when a killer has accomplished his ritual
+    void OnWin()
     {
 
     }
-    /*void SpawnObjects()
+
+    //To be put inside MenuManager
+    void LaunchGame()
     {
-        for (int i = 0; i < 6; i++)
-        {
-            Vector3 spawnPosition = new Vector3(Random.Range(-SpawnValues.x, SpawnValues.x), Random.Range(-SpawnValues.y, SpawnValues.y), 0);
-            Quaternion spawnRotation = Quaternion.identity;
-            Instantiate(Item, spawnPosition, spawnRotation);
-        }
-    }*/
-    /*void SpawnCivils()
-    {
-        for (int i = 0; i <10; i++)
-        {
-            Vector3 spawnPosition = new Vector3(Random.Range(-SpawnValues.x, SpawnValues.x), Random.Range(-SpawnValues.y, SpawnValues.y), 0);
-            Quaternion spawnRotation = Quaternion.identity;
-            Instantiate(Civil, spawnPosition, spawnRotation);
-        }
-    }*/
-    void SpawnCops()
-    {
-            Vector3 spawnPosition = new Vector3(-6, -3, 0);
-            Quaternion spawnRotation = Quaternion.identity;
-            Instantiate(Cop, spawnPosition, spawnRotation);
+        //SceneManager.LoadScene(); //Add Scene build index
+        Application.LoadLevel("arena"); //Is obsolete
     }
 }
