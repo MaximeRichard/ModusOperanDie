@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
         End
     }
 
+	public static Text VictoryText;
     public List<GameObject> Killers;
     private List<PickUp> PickUps;
     public Vector2 SpawnValues;
@@ -34,7 +35,7 @@ public class GameController : MonoBehaviour {
 
 
         // Use this for initialization
-        void Start()
+    void Start()
     {
         //SAFE CODE : Check si il existe un autre gamemanager si c'est le cas, je m'autodetruit
         if (gameController != null && gameController != this)
@@ -81,9 +82,9 @@ public class GameController : MonoBehaviour {
 	}
 
     //OnWin when a killer has accomplished his ritual
-    void OnWin()
+	public static void OnWin(string playerName)
     {
-
+		VictoryText.text = playerName + " a gagné !";
     }
 
     //To be put inside MenuManager
@@ -206,9 +207,9 @@ public class GameController : MonoBehaviour {
         
         Killer killer = k.GetComponent<Killer>();
         if(dat.Type == PickUp.PickUpType.Weapon)
-        hud.InventoryWeapon.sprite = Resources.Load<Sprite>("Sprites/photoArmes/photo" + dat.Name);
+        hud.InventoryWeapon.sprite = Resources.Load<Sprite>("Sprites/postitArmes/postit" + dat.Name);
         if (dat.Type == PickUp.PickUpType.Signature)
-            hud.InventorySignature.sprite = Resources.Load<Sprite>("Sprites/photoObjets/photo" + dat.Name);
+            hud.InventorySignature.sprite = Resources.Load<Sprite>("Sprites/postitObjets/postit" + dat.Name);
         if (dat.Equals(null))
             hud.InventorySignature.sprite = null;
 

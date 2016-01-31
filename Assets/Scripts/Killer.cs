@@ -7,6 +7,7 @@ public class Killer : MonoBehaviour {
 
 	private Rigidbody2D _rb;
 	private Animator _animator;
+	public string PlayerName;
 
 	public struct PickUpData {
 		public PickUp.PickUpType Type;
@@ -63,7 +64,6 @@ public class Killer : MonoBehaviour {
 	public IEnumerator Attack()
     {
 		_animator.SetBool ("attacking", true);
-		print ("Attack");
 		yield return new WaitForSeconds (0.5f);
 		_animator.SetBool ("attacking", false);
     }
@@ -84,7 +84,7 @@ public class Killer : MonoBehaviour {
 				if (!(pu.Type == PickUp.PickUpType.Victim) && InventorySlot1.Name == null) {
 					InventorySlot1 = pu;
                     GameController.RefreshInventory(this.gameObject, pu);
-                    Destroy (go);
+					Destroy (go);
 				} else if (!(pu.Type == PickUp.PickUpType.Victim) && InventorySlot2.Name == null) {
 					InventorySlot2 = pu;
                     GameController.RefreshInventory(this.gameObject, pu);
@@ -94,8 +94,7 @@ public class Killer : MonoBehaviour {
 		}
         
         if (pu.Type == PickUp.PickUpType.Victim && pu.Name == TargetVictim && CanKill ()) {
-			//TODO : à remplacer par GameController.OnWin()
-			HasWon = true;
+			GameController.OnWin (PlayerName);
 			Destroy (go);
 		}
     }
@@ -115,20 +114,20 @@ public class Killer : MonoBehaviour {
 		switch (dir) {
 		case PlayerControl.DropDirection.Left:
 			if (InventorySlot1.Name != null)
-				RemoveAndInstantiateInventoryItem (0, -1);
+				RemoveAndInstantiateInventoryItem (0, -1, InventorySlot1);
                 Debug.Log(InventorySlot1.Name);
                 GameController.RefreshInventory(this.gameObject, InventorySlot1);
                 break;
 		case PlayerControl.DropDirection.Right:
 			if (InventorySlot2.Name != null)
-				RemoveAndInstantiateInventoryItem (1, 1);
+				RemoveAndInstantiateInventoryItem (1, 1, InventorySlot2);
                 GameController.RefreshInventory(this.gameObject, InventorySlot2);
                 break;
 		}
     }
 
-	public void RemoveAndInstantiateInventoryItem(int index, int direction){
-		GameObject PickUp = (GameObject) Instantiate(PickUpPrefab, new Vector2(transform.position.x+DropDistance*direction, transform.position.y), Quaternion.identity);
+	public void RemoveAndInstantiateInventoryItem(int index, int direction, PickUpData pud){
+		GameObject PickUp = (GameObject) Instantiate(Resources.Load<GameObject>("Prefabs/PickUps/"+pud.Name), new Vector2(transform.position.x+DropDistance*direction, transform.position.y), Quaternion.identity);
 		PickUpData pu;
 		pu.Name = null;
 		pu.Type = (PickUp.PickUpType) 0;
@@ -190,9 +189,23 @@ public class Killer : MonoBehaviour {
 			Killer k = other.transform.parent.gameObject.GetComponent<Killer> ();
 			if (k.Killing) {
 				Stunned = true;
+				if (InventorySlot2.Name != null) {
+					Drop (PlayerControl.DropDirection.Right);
+				} else if (InventorySlot1.Name != null) {
+					Drop (PlayerControl.DropDirection.Left);
+				}
 				_animator.SetBool ("stun", true);
-				Attack ();
 			}
+		}
+
+		if (other.tag == "Awareness") {
+			Stunned = true;
+			if (InventorySlot2.Name != null) {
+				Drop (PlayerControl.DropDirection.Right);
+			} else if (InventorySlot1.Name != null) {
+				Drop (PlayerControl.DropDirection.Left);
+			}
+			_animator.SetBool ("stun", true);
 		}
 	}
 

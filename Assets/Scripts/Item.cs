@@ -22,7 +22,7 @@ public class Item : PickUp
 	void Hover ()
 	{
 		tempPosition.x += horizontalSpeed;
-		tempPosition.y = Mathf.Sin (Time.realtimeSinceStartup * verticalSpeed) * amplitude;
+		tempPosition.y += Mathf.Sin (Time.realtimeSinceStartup * verticalSpeed) * amplitude;
 		transform.position = tempPosition;
 	}
 }

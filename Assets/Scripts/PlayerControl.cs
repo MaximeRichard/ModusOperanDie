@@ -41,7 +41,6 @@ public class PlayerControl : MonoBehaviour {
 
 
 			if (GamepadInput.Instance.gamepads [PlayerNumber - 1].GetButtonDown (GamepadButton.Action3)) {
-				print ("Attack");
 				StartCoroutine (_killer.Attack ());
 			}
 
