@@ -13,13 +13,14 @@ public class GameController : MonoBehaviour {
         End
     }
 
-	public static Text VictoryText;
+	private string WinningPlayer = "";
     public List<GameObject> Killers;
     private List<PickUp> PickUps;
     public Vector2 SpawnValues;
+    public Text VictoryText;
 
     //UI
-	public List<Killer.PickUpData> weapons = new List<Killer.PickUpData>();
+    public List<Killer.PickUpData> weapons = new List<Killer.PickUpData>();
 	public List<Killer.PickUpData> victims = new List<Killer.PickUpData>();
 	public List<Killer.PickUpData> signatures = new List<Killer.PickUpData>();
     /*public Dictionary<Killer, Color> colors;
@@ -76,15 +77,28 @@ public class GameController : MonoBehaviour {
         gameController.gameState = state;
     }
 
+    //Accesseurs de WinningPlayer
+    public static string GetWinningPlayer()
+    {
+        return gameController.WinningPlayer;
+    }
+    public static void SetWinningPlayer(string winningplayer)
+    {
+        gameController.WinningPlayer = winningplayer;
+    }
+
     // Update is called once per frame
     void Update () {
-	
+	    if(gameState == GameState.End)
+        {
+            OnWin();
+        }
 	}
 
     //OnWin when a killer has accomplished his ritual
-	public static void OnWin(string playerName)
+	public void OnWin()
     {
-		VictoryText.text = playerName + " a gagné !";
+		VictoryText.text = WinningPlayer + " a gagné !";
     }
 
     //To be put inside MenuManager

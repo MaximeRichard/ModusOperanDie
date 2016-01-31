@@ -94,8 +94,9 @@ public class Killer : MonoBehaviour {
 		}
         
         if (pu.Type == PickUp.PickUpType.Victim && pu.Name == TargetVictim && CanKill ()) {
-			GameController.OnWin (PlayerName);
-			Destroy (go);
+            GameController.SetWinningPlayer(PlayerName);
+            GameController.SetGameState (GameController.GameState.End);
+            Destroy (go);
 		}
     }
 
