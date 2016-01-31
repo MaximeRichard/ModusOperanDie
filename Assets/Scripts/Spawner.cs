@@ -28,7 +28,7 @@ public class Spawner : MonoBehaviour {
         SpawnObjects();
         SpawnCivils();
         SpawnCops();
-        SpawnKillers();
+        //SpawnKillers();
     }
 
 
@@ -59,7 +59,7 @@ public class Spawner : MonoBehaviour {
             Instantiate(Cop, spawnPosition, spawnRotation);
         }
     }
-    void SpawnKillers()
+    /*void SpawnKillers()
     {
         int i = 1;
         foreach (Vector3 killer in KillersPosition)
@@ -71,5 +71,5 @@ public class Spawner : MonoBehaviour {
             GameController.getInstance().Killers.Add(k.GetComponent<Killer>());
             i++;
         }
-    }
+    }*/
 }

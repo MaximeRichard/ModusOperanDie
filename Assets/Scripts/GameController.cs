@@ -13,17 +13,19 @@ public class GameController : MonoBehaviour {
         End
     }
 
-    public List<Killer> Killers;
+    public List<GameObject> Killers;
     private List<PickUp> PickUps;
     public Vector2 SpawnValues;
 
     //UI
-    public List<Killer.PickUpData> objects;
+    public List<Killer.PickUpData> weapons;
+    public List<Killer.PickUpData> victims;
     public List<Killer.PickUpData> signatures;
-    public Dictionary<Killer, Color> colors;
+    /*public Dictionary<Killer, Color> colors;
     public Dictionary<Killer, Killer.PickUpData> victims;
-    public Dictionary<Killer, Killer.PickUpData> weapons;
+    public Dictionary<Killer, Killer.PickUpData> weapons;*/
     //END UI
+
 
     GameState gameState;
 
@@ -46,10 +48,14 @@ public class GameController : MonoBehaviour {
 
         // L'objet n'est pas détruit quand on change de scène
         DontDestroyOnLoad(this.gameObject);
-
+        SettingTarget();
         //chargement de menu
         //Application.LoadLevel("Menu");
-        Application.LoadLevel("arena");
+        //Application.LoadLevel("arena");
+        foreach (GameObject go in Killers)
+        {
+            LoadObjectives(go);
+        }
     }
 
     // fonction a appeller qui retourne le script gameManager
@@ -101,38 +107,43 @@ public class GameController : MonoBehaviour {
     {
         Killer.PickUpData pu;
         pu.Type = PickUp.PickUpType.Signature;
-        pu.Name = "Canard";
+        pu.Name = "AppareilPhoto";
         signatures.Add(pu);
-        pu.Name = "Rape";
+        pu.Name = "Chat";
+        signatures.Add(pu);
+        pu.Name = "Huitre";
         signatures.Add(pu);
         pu.Name = "Rose";
-        signatures.Add(pu);
-        pu.Name = "Whisky";
         signatures.Add(pu);
 
         Killer.PickUpData pu2;
         pu2.Type = PickUp.PickUpType.Weapon;
-        pu2.Name = "Couteau";
-        objects.Add(pu2);
+        pu2.Name = "Canard";
+        weapons.Add(pu2);
         pu2.Name = "Hache";
-        objects.Add(pu2);
-        pu2.Name = "Couteau";
-        objects.Add(pu2);
-        pu2.Name = "Hache";
-        objects.Add(pu2);
+        weapons.Add(pu2);
+        pu2.Name = "Marteau";
+        weapons.Add(pu2);
+        pu2.Name = "Rape";
+        weapons.Add(pu2);
 
-        pu2.Type = PickUp.PickUpType.Victim;
-        pu2.Name = "BW";
-        objects.Add(pu2);
-        pu2.Name = "RW";
-        objects.Add(pu2);
-        pu2.Name = "BW";
-        objects.Add(pu2);
-        pu2.Name = "RW";
-        objects.Add(pu2);
+        Killer.PickUpData pu3;
+        pu3.Type = PickUp.PickUpType.Victim;
+        pu3.Name = "BW";
+        victims.Add(pu3);
+        pu3.Name = "RW";
+        victims.Add(pu3);
+        pu3.Name = "BS";
+        victims.Add(pu3);
+        pu3.Name = "HS";
+        victims.Add(pu3);
+    }
+    void BrowseLists()
+    {
+
     }
     //Vert Rouge Bleu Violet
-    void FillDictionnary()
+    /*void FillDictionnary()
     {
         colors.Add(Killers[0], Color.green);
         colors.Add(Killers[1], Color.red);
@@ -142,27 +153,27 @@ public class GameController : MonoBehaviour {
         foreach (Killer kil in Killers)
         {
             int i = 0;
-            /*foreach (Killer.PickUpData obj in objects)
-            {*/
+            foreach (Killer.PickUpData obj in objects)
+            {
             if (objects[i].Type == PickUp.PickUpType.Weapon)
                 {
                     weapons.Add(kil, objects[i]);
                     kil.TargetWeapon = objects[i].Name;
                 }
-            /*}*/
+            }
             i++;
         }
         foreach (Killer kil in Killers)
         {
             int i = 0;
-            /*foreach (Killer.PickUpData obj in objects)
-            {*/
+            foreach (Killer.PickUpData obj in objects)
+            {
                 if (objects[i].Type == PickUp.PickUpType.Victim)
                 {
                     victims.Add(kil, objects[i]);
                     kil.TargetVictim = objects[i].Name;
                 }
-            /*}*/
+            }
             i++;
         }
 
@@ -172,20 +183,15 @@ public class GameController : MonoBehaviour {
                 kil.TargetSignature = signatures[i].Name;
             i++;
         }
-    }
+    }*/
 
-    void FillImages()
+    void LoadObjectives(GameObject k)
     {
-
-    }
-
-    void FillUI(Killer killer)
-    {
-        
-    }
-    void UpdateUI(Killer killer)
-    {
-
+        HUD hud = k.GetComponent<HUD>();
+        Killer killer = k.GetComponent<Killer>();
+        hud.ObjectiveWeapon.sprite = Resources.Load<Sprite>("Sprites/photoArmes/photo" + killer.TargetWeapon);
+        hud.ObjectiveSignature.sprite = (Sprite)Resources.Load<Sprite>("Sprites/photoObjets/photo" + killer.TargetSignature);
+        hud.ObjectiveVictim.sprite = (Sprite)Resources.Load<Sprite>("Sprites/photoPersos/" + killer.TargetVictim);
     }
 
 }

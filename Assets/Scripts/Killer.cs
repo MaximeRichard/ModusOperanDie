@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Killer : MonoBehaviour {
 
@@ -198,4 +199,9 @@ public class Killer : MonoBehaviour {
 		pu.Name = pickup.Name;
 		return pu;
 	}
+
+    public class HUD
+    {
+        public Image i1;
+    }
 }
