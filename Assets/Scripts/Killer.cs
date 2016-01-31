@@ -37,8 +37,6 @@ public class Killer : MonoBehaviour {
 
 	public float DropDistance;
 
-
-
 	void Awake(){
 		_rb = this.GetComponent<Rigidbody2D> ();
 		_animator = this.GetComponent<Animator> ();
@@ -85,15 +83,17 @@ public class Killer : MonoBehaviour {
 			if (InventorySlot1.Name != pu.Name && InventorySlot2.Name != pu.Name) {	
 				if (!(pu.Type == PickUp.PickUpType.Victim) && InventorySlot1.Name == null) {
 					InventorySlot1 = pu;
-					Destroy (go);
+                    GameController.RefreshInventory(this.gameObject, pu);
+                    Destroy (go);
 				} else if (!(pu.Type == PickUp.PickUpType.Victim) && InventorySlot2.Name == null) {
 					InventorySlot2 = pu;
-					Destroy (go);
+                    GameController.RefreshInventory(this.gameObject, pu);
+                    Destroy (go);
 				}
 			}
 		}
-
-		if (pu.Type == PickUp.PickUpType.Victim && pu.Name == TargetVictim && CanKill ()) {
+        
+        if (pu.Type == PickUp.PickUpType.Victim && pu.Name == TargetVictim && CanKill ()) {
 			//TODO : à remplacer par GameController.OnWin()
 			HasWon = true;
 			Destroy (go);
@@ -116,11 +116,14 @@ public class Killer : MonoBehaviour {
 		case PlayerControl.DropDirection.Left:
 			if (InventorySlot1.Name != null)
 				RemoveAndInstantiateInventoryItem (0, -1);
-			break;
+                Debug.Log(InventorySlot1.Name);
+                GameController.RefreshInventory(this.gameObject, InventorySlot1);
+                break;
 		case PlayerControl.DropDirection.Right:
 			if (InventorySlot2.Name != null)
 				RemoveAndInstantiateInventoryItem (1, 1);
-			break;
+                GameController.RefreshInventory(this.gameObject, InventorySlot2);
+                break;
 		}
     }
 

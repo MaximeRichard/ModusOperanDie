@@ -49,6 +49,7 @@ public class GameController : MonoBehaviour {
         // L'objet n'est pas détruit quand on change de scène
         DontDestroyOnLoad(this.gameObject);
         SettingTarget();
+        BrowseLists();
         //chargement de menu
         //Application.LoadLevel("Menu");
         //Application.LoadLevel("arena");
@@ -122,9 +123,9 @@ public class GameController : MonoBehaviour {
         weapons.Add(pu2);
         pu2.Name = "Hache";
         weapons.Add(pu2);
-        pu2.Name = "Marteau";
+        pu2.Name = "Canard";
         weapons.Add(pu2);
-        pu2.Name = "Rape";
+        pu2.Name = "Hache";
         weapons.Add(pu2);
 
         Killer.PickUpData pu3;
@@ -133,14 +134,20 @@ public class GameController : MonoBehaviour {
         victims.Add(pu3);
         pu3.Name = "RW";
         victims.Add(pu3);
-        pu3.Name = "BS";
+        pu3.Name = "BW";
         victims.Add(pu3);
-        pu3.Name = "HS";
+        pu3.Name = "RW";
         victims.Add(pu3);
     }
     void BrowseLists()
     {
-
+        for(int i =0;i<Killers.Count; i++)
+        {
+            Killer kil = Killers[i].GetComponent<Killer>();
+            kil.TargetSignature = signatures[i].Name ;
+            kil.TargetVictim = victims[i].Name;
+            kil.TargetWeapon = weapons[i].Name;
+        }
     }
     //Vert Rouge Bleu Violet
     /*void FillDictionnary()
@@ -190,8 +197,20 @@ public class GameController : MonoBehaviour {
         HUD hud = k.GetComponent<HUD>();
         Killer killer = k.GetComponent<Killer>();
         hud.ObjectiveWeapon.sprite = Resources.Load<Sprite>("Sprites/photoArmes/photo" + killer.TargetWeapon);
-        hud.ObjectiveSignature.sprite = (Sprite)Resources.Load<Sprite>("Sprites/photoObjets/photo" + killer.TargetSignature);
-        hud.ObjectiveVictim.sprite = (Sprite)Resources.Load<Sprite>("Sprites/photoPersos/" + killer.TargetVictim);
+        hud.ObjectiveSignature.sprite = Resources.Load<Sprite>("Sprites/photoObjets/photo" + killer.TargetSignature);
+        hud.ObjectiveVictim.sprite = Resources.Load<Sprite>("Sprites/photoPersos/" + killer.TargetVictim);
     }
+    public static void RefreshInventory(GameObject k, Killer.PickUpData dat)
+    {
+        HUD hud = k.GetComponent<HUD>();
+        
+        Killer killer = k.GetComponent<Killer>();
+        if(dat.Type == PickUp.PickUpType.Weapon)
+        hud.InventoryWeapon.sprite = Resources.Load<Sprite>("Sprites/photoArmes/photo" + dat.Name);
+        if (dat.Type == PickUp.PickUpType.Signature)
+            hud.InventorySignature.sprite = Resources.Load<Sprite>("Sprites/photoObjets/photo" + dat.Name);
+        if (dat.Equals(null))
+            hud.InventorySignature.sprite = null;
 
+    }
 }
