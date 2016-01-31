@@ -18,9 +18,9 @@ public class GameController : MonoBehaviour {
     public Vector2 SpawnValues;
 
     //UI
-    public List<Killer.PickUpData> weapons;
-    public List<Killer.PickUpData> victims;
-    public List<Killer.PickUpData> signatures;
+	public List<Killer.PickUpData> weapons = new List<Killer.PickUpData>();
+	public List<Killer.PickUpData> victims = new List<Killer.PickUpData>();
+	public List<Killer.PickUpData> signatures = new List<Killer.PickUpData>();
     /*public Dictionary<Killer, Color> colors;
     public Dictionary<Killer, Killer.PickUpData> victims;
     public Dictionary<Killer, Killer.PickUpData> weapons;*/

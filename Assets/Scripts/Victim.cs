@@ -34,7 +34,7 @@ public class Victim : PickUp {
 		_rb.velocity = new Vector3(xActive, yActive, 0.0f) * objectSpeed;
 		_rb.position = new Vector3(
 			Mathf.Clamp(_rb.position.x, -3.5f, 3.5f),
-			Mathf.Clamp(_rb.position.y, -3.0f, 4.0f),
+			Mathf.Clamp(_rb.position.y, -1.49f, 2.02f),
 			0
 		);
     }
