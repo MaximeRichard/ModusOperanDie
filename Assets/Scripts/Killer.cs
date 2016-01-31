@@ -36,6 +36,8 @@ public class Killer : MonoBehaviour {
 
 	public float DropDistance;
 
+
+
 	void Awake(){
 		_rb = this.GetComponent<Rigidbody2D> ();
 		_animator = this.GetComponent<Animator> ();

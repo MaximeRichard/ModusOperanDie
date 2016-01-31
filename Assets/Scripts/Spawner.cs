@@ -68,6 +68,7 @@ public class Spawner : MonoBehaviour {
             Quaternion spawnRotation = Quaternion.identity;
             GameObject k = (GameObject) Instantiate(Killer, spawnPosition, spawnRotation);
             k.GetComponent<PlayerControl>().PlayerNumber = i;
+            GameController.getInstance().Killers.Add(k.GetComponent<Killer>());
             i++;
         }
     }
