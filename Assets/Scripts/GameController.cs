@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class GameController : MonoBehaviour {
 
@@ -18,6 +19,7 @@ public class GameController : MonoBehaviour {
     private List<PickUp> PickUps;
     public Vector2 SpawnValues;
     public Text VictoryText;
+    public List<AudioSource> victorySounds;
 
     //UI
     public List<Killer.PickUpData> weapons = new List<Killer.PickUpData>();
@@ -34,10 +36,20 @@ public class GameController : MonoBehaviour {
     //variable static  qui ne peut exister qu'une fois dans le programme
     private static GameController gameController = null;
 
+    //Accesseurs de GameState
+    public static GameState GetGameState()
+    {
+        return gameController.gameState;
+    }
+    public static void SetGameState(GameState state)
+    {
+        gameController.gameState = state;
+    }
 
-        // Use this for initialization
+    // Use this for initialization
     void Start()
     {
+        gameState = GameState.InGame;
         //SAFE CODE : Check si il existe un autre gamemanager si c'est le cas, je m'autodetruit
         if (gameController != null && gameController != this)
         {
@@ -49,7 +61,7 @@ public class GameController : MonoBehaviour {
         gameController = this;
 
         // L'objet n'est pas détruit quand on change de scène
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
         SettingTarget();
         BrowseLists();
         //chargement de menu
@@ -67,15 +79,7 @@ public class GameController : MonoBehaviour {
         return gameController;
     }
 
-    //Accesseurs de GameState
-    public static GameState GetGameState()
-    {
-        return gameController.gameState;
-    }
-    public static void SetGameState(GameState state)
-    {
-        gameController.gameState = state;
-    }
+    
 
     //Accesseurs de WinningPlayer
     public static string GetWinningPlayer()
@@ -91,14 +95,18 @@ public class GameController : MonoBehaviour {
     void Update () {
 	    if(gameState == GameState.End)
         {
-            OnWin();
+            StartCoroutine(OnWin());
         }
 	}
 
     //OnWin when a killer has accomplished his ritual
-	public void OnWin()
+	IEnumerator OnWin()
     {
 		VictoryText.text = WinningPlayer + " a gagné !";
+        victorySounds[Random.Range(0, 9)].Play();
+        yield return new WaitForSeconds(7);
+        GameController.SetGameState(GameController.GameState.Start);
+        Application.LoadLevel("splash");
     }
 
     //To be put inside MenuManager
