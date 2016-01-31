@@ -9,7 +9,12 @@ public class splash : MonoBehaviour {
 	
 	void Update() {
 
-		if (GamepadInput.Instance.gamepads[0].GetButton(GamepadButton.Start) ) {
+        if (GamepadInput.Instance.gamepads[0].GetButton(GamepadButton.Action4))
+        {
+            Application.LoadLevel("Credits");
+        }
+
+        if (GamepadInput.Instance.gamepads[0].GetButton(GamepadButton.Start) ) {
             Application.LoadLevel ("arena");
 		}
 	}

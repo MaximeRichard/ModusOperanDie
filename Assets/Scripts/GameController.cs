@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour {
     private List<PickUp> PickUps;
     public Vector2 SpawnValues;
     public Text VictoryText;
-    public List<AudioSource> victorySounds;
+    public List<AudioClip> victorySounds;
 
     //UI
     public List<Killer.PickUpData> weapons = new List<Killer.PickUpData>();
@@ -103,8 +103,9 @@ public class GameController : MonoBehaviour {
 	IEnumerator OnWin()
     {
 		VictoryText.text = WinningPlayer + " a gagné !";
-        victorySounds[Random.Range(0, 9)].Play();
-        yield return new WaitForSeconds(7);
+        AudioSource player = GameObject.Find("musicplayer").GetComponent<AudioSource>();
+        //player.PlayOneShot(victorySounds[Random.Range(0, 9)], 0.75f);
+        yield return new WaitForSeconds(3);
         GameController.SetGameState(GameController.GameState.Start);
         Application.LoadLevel("splash");
     }
